@@ -109,3 +109,51 @@ public class Main {
     }
 }
 ```
+
+## 또 다른 문제 풀이
+
+O(nlogn) 방식이 아닌 O(n) 방식으로 푸는 방법이 있다.
+
+다만, 이 방법은 공간복잡도가 O(1000000)으로 O(n)보다 크다.
+
+입력값을 배열에 저장하고, 그 입력값을 인덱스로 가지는 boolean형 배열을 만든다.
+
+해당 입력값이 있는지 판별하기 위해서 입력값을 그대로 저장한 배열을 탐색하며 [목표값 - 배열 요소]를 boolean형 배열에 있는지 없는지를 판별하고 경우의 수를 더하는 방식이다.
+
+### 코드
+
+```java
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+            int result = 0;
+            int[] numbers = new int[100001];
+            boolean[] exists = new boolean[1000001];
+
+            // 입력값 받기
+            int len = Integer.parseInt(br.readLine());
+
+            // to int array
+            String[] numberStr = br.readLine().split(" ");
+            for (int i = 0; i < len; i++) {
+                numbers[i] = Integer.parseInt(numberStr[i]);
+                exists[numbers[i]] = true;
+            }
+
+            int target = Integer.parseInt(br.readLine());
+
+            for (int i = 0; i < len; i++) {
+                exists[numbers[i]] = false;
+                int pair = target - numbers[i];
+                if (pair > 0 && pair <= 1_000_000 && exists[pair]) {
+                    result++;
+                }
+            }
+
+            System.out.println(result);
+        }
+    }
+}
+```
